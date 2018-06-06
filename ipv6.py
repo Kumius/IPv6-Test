@@ -29,6 +29,7 @@ call(["curl", "-A 'Chrome/66.0.3359.181'",  "https://www.baidu.com"])
 import os
 import subprocess
 from subprocess import call
+import threading
 
 '''
 一般指编码造成的错误
@@ -181,7 +182,7 @@ def analyze(htmls):
     
     return result
 
-def handle(filename):
+def handle(filename, scope):
     file = open(filename)
     path = "result/"
     #folders = ["http-ipv4", "http-ipv6", "https-ipv4", "https-ipv6"]
@@ -190,10 +191,16 @@ def handle(filename):
     http_modes = ["http", "https"]
     #http_modes = ["https"]
     
-    fout = open("output.csv", "w")
+    foutname = "output/output-" + str(scope[0]) + "-" + str(scope[1]) + ".csv"
+    fout = open(foutname, "w")
 
     for line in file:
         num, url = line.split(",")
+        
+        num_int = int(num)
+        if num_int < scope[0] or num_int > scope[1]:
+            continue
+        
         url = url.strip()
         htmls = []
         for http_mode in http_modes:
@@ -213,7 +220,7 @@ def handle(filename):
         分析不同html之间的区别
         '''
         result = analyze(htmls)
-        print(result)
+        print(num, result, sep=": ")
         '''
         如果页面有差异，则保存全部页面，留待后续分析
         '''
@@ -233,6 +240,7 @@ def handle(filename):
         for item in result:
             fout.write("," + str(item))
         fout.write("\n")
+        fout.flush()
         
     fout.close()
 
@@ -244,7 +252,23 @@ if __name__ == "__main__":
     #curl_popen("https://www.baidu.com")
     #handle("top-1m.csv")
     #handle("test.txt")
-    handle("tmp.txt")
+    thds = []
+    for it in range(4, 4 + 10):
+        args = ("test.txt", [5000 * it + 1, 5000 * (it+1)])
+        thd = threading.Thread(target=handle, args=args)
+        thds.append(thd)
+        thd.start()
+    for it in range(10):
+        thds[it].join()
+    
+#    handle("test.txt", [1,10_000])
+#    handle("test.txt", [10_001,20_000])
+#    handle("test.txt", [15367, 20000])
+#
+#    handle("test.txt", [1,1000_000])
+
+
+
 
 
 
