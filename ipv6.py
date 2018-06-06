@@ -252,20 +252,20 @@ if __name__ == "__main__":
     #curl_popen("https://www.baidu.com")
     #handle("top-1m.csv")
     #handle("test.txt")
+    '''
+    测试
+    '''
     thds = []
-    for it in range(4, 4 + 10):
+    for it in range(4, 10):
+        #args = ("top-1m.csv", [5000 * it + 1, 5000 * (it+1)])
         args = ("test.txt", [5000 * it + 1, 5000 * (it+1)])
         thd = threading.Thread(target=handle, args=args)
         thds.append(thd)
         thd.start()
-    for it in range(10):
+    for it in range(6):
         thds[it].join()
-    
-#    handle("test.txt", [1,10_000])
-#    handle("test.txt", [10_001,20_000])
-#    handle("test.txt", [15367, 20000])
-#
-#    handle("test.txt", [1,1000_000])
+
+    #handle("test.txt", [15367, 20000])
 
 
 
