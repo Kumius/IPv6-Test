@@ -153,10 +153,10 @@ def analyze(htmls):
         time_total_diff = 0
         page_diff = 0
     else:
-        time_connect_v6 = result[index_v6 + 1]
-        time_total_v6 = result[index_v6 + 3]
-        time_connect_v4 = result[index_v4 + 1]
-        time_total_v4 = result[index_v4 + 3]
+        time_connect_v6 = result[index_v6 + 2]
+        time_total_v6 = result[index_v6 + 4]
+        time_connect_v4 = result[index_v4 + 2]
+        time_total_v4 = result[index_v4 + 4]
         
         '''防止除0溢出'''
         if time_connect_v4 == 0:
