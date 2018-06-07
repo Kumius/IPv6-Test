@@ -256,16 +256,16 @@ if __name__ == "__main__":
     测试
     '''
     thds = []
-    for it in range(4, 10):
-        #args = ("top-1m.csv", [5000 * it + 1, 5000 * (it+1)])
-        args = ("test.txt", [5000 * it + 1, 5000 * (it+1)])
+    for it in range(10, 15):
+        args = ("top-1m.csv", [10000 * it + 1, 10000 * (it+1)])
+        #args = ("test.txt", [10000 * it + 1, 10000 * (it+1)])
         thd = threading.Thread(target=handle, args=args)
         thds.append(thd)
         thd.start()
-    for it in range(6):
+    for it in range(5):
         thds[it].join()
 
-    #handle("test.txt", [15367, 20000])
+    #handle("top-1m.csv", [15367, 20000])
 
 
 
